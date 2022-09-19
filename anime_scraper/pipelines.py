@@ -6,8 +6,15 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+from anime_scraper.models import insert_genre
 
 class AnimeScraperPipeline:
     def process_item(self, item, spider):
         return item
+
+class GenreScraperPipeline:
+    def process_item(self,item,spider):
+        id=item['id']
+        name=item['name']
+        insert_genre(id,name)
+

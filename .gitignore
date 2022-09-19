@@ -1,1 +1,3 @@
 venv/
+anime_scraper/config.py
+__pycache__
