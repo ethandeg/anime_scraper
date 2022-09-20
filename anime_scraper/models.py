@@ -28,7 +28,73 @@ def insert_genre(id,name):
             row=cur.fetchone()
             if(row):
                 print(f"Found row, so sucessfully inserted! {row}")
-            close_db()
+            close_db(cur)
     except Exception as e:
         print(e)
+
+
+def get_studio(id):
+    try:
+        conn=connect_db()
+        cur=conn.cursor()
+        query="SELECT * FROM studios WHERE mal_id=%s" 
+        cur.execute(query,[id])
+        studio=cur.fetchone()
+        return studio
+    except Exception as e:
+        print(e)
+    finally:
+        close_db(cur)
+
+def insert_studio(id,name):
+    try:
+        #first check if id already exists
+        studio=get_studio(id)
+        if(studio):
+            print(f"that studio already exists: {id}")
+        else:
+            conn=connect_db()
+            cur=conn.cursor()
+            query="INSERT INTO studios (mal_id,name) VALUES (%s,%s) RETURNING mal_id"
+            cur.execute(query,[id,name])
+            conn.commit()
+            row=cur.fetchone()
+            if(row):
+                print(f"Found row, so sucessfully inserted! {row}")
+            close_db(cur)
+    except Exception as e:
+        print(e)
+def get_rank(name):
+    try:
+        conn=connect_db()
+        cur=conn.cursor()
+        query="SELECT * FROM ranks WHERE name=%s" 
+        cur.execute(query,[name])
+        rank=cur.fetchone()
+        return rank
+    except Exception as e:
+        print(e)
+    finally:
+        close_db(cur)
+
+def insert_rank(name):
+    try:
+        #first check if id already exists
+        rank=get_rank(name)
+        if(rank):
+            print(f"that rank already exists: {id}")
+        else:
+            conn=connect_db()
+            cur=conn.cursor()
+            query="INSERT INTO ranks (name) VALUES (%s) RETURNING mal_id"
+            cur.execute(query,[name])
+            conn.commit()
+            row=cur.fetchone()
+            if(row):
+                print(f"Found row, so sucessfully inserted! {row}")
+            close_db(cur)
+    except Exception as e:
+        print(e)
+
+
 

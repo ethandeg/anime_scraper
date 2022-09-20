@@ -10,12 +10,6 @@ class GenreSpider(scrapy.Spider):
     start_urls=['https://myanimelist.net/anime.php']
 
     def parse(self,response):
-        if os.path.exists('genre.txt'):
-            os.remove("genre.txt")
-        if os.path.exists('rankings.txt'):
-            os.remove("rankings.txt")
-        if os.path.exists('studios.txt'):
-            os.remove("studios.txt")
         genres_container =response.css('.genre-link')[0:4]
         genres = genres_container.css('.genre-name-link')
         rankings=response.css('.genre-link')[5]
