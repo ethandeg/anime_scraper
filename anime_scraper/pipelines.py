@@ -6,11 +6,18 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from anime_scraper.models import insert_genre, insert_studio,insert_rank
+from anime_scraper.models import insert_genre, insert_studio,insert_rank,insert_link
 
 class AnimeScraperPipeline:
     def process_item(self, item, spider):
         return item
+
+class AnimeLinkScraperPipeline:
+    def process_item(self,item,spider):
+        if item['type']=='url':
+            url=item['link']
+            insert_link(url)
+
 
 class GenreScraperPipeline:
     def process_item(self,item,spider):

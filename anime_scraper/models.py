@@ -95,6 +95,39 @@ def insert_rank(name):
             close_db(cur)
     except Exception as e:
         print(e)
+def get_link(url):
+    try:
+        conn=connect_db()
+        cur=conn.cursor()
+        print(f'*****************Url: {url}')
+        query="SELECT * FROM anime_links WHERE link=%s" 
+        cur.execute(query,[url])
+        url=cur.fetchone()
+        return url
+    except Exception as e:
+        print(e)
+    finally:
+        close_db(cur)
+
+def insert_link(url):
+    try:
+        #first check if id already exists
+        link=get_link(url)
+        if(link):
+            print(f"that url already exists: {link}")
+        else:
+            conn=connect_db()
+            cur=conn.cursor()
+            query="INSERT INTO anime_links (link) VALUES (%s) RETURNING link"
+            print(f"inserting url**************: {url}")
+            cur.execute(query,[url])
+            conn.commit()
+            row=cur.fetchone()
+            if(row):
+                print(f"Found row, so sucessfully inserted! {url}")
+            close_db(cur)
+    except Exception as e:
+        print(e)
 
 
 
