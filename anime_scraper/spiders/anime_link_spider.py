@@ -39,15 +39,23 @@ class AnimeSpider(scrapy.Spider):
     def get_pages(self,response,visited_urls=[]):
         # index=int(response.css('span.bgColor1 > a::text').get())
         all_links=list(set(response.css('span.bgColor1 > a::attr(href)').getall()))
-
+        # or actually parse up here 
+        anime_links=list(set(response.css('a.hoverinfo_trigger::attr(href)').getall()))
+        print('MADE IT')
+        for link in anime_links:
+            yield {'link': link, 'type': 'url'}
+            with open('links.txt','a',encoding='utf-8') as f:
+                f.write(f"{link}\n")
+        f.close()
         for link in all_links:
             link=response.urljoin(link)
             if link not in visited_urls:
+                #parse_anime_url here, but keep the recursion
                 with open('parentlinks.txt','a',encoding='utf-8') as f:
                     f.write(f"{link}\n")
                     # headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0'}
                     visited_urls.append(link)
-                    yield {'link': link, 'type': 'url'}
+                    # yield {'link': link, 'type': 'url'}
                     yield scrapy.Request(link,self.get_pages)
                     # print(f'{link}1111111111')
         # for url in visited_urls:
@@ -68,6 +76,7 @@ class AnimeSpider(scrapy.Spider):
         anime_links=list(set(response.css('a.hoverinfo_trigger::attr(href)').getall()))
         print('MADE IT')
         for link in anime_links:
+            yield {'link': link, 'type': 'url'}
             with open('links.txt','a',encoding='utf-8') as f:
                 f.write(f"{link}\n")
         f.close()

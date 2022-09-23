@@ -16,7 +16,9 @@ class AnimeLinkScraperPipeline:
     def process_item(self,item,spider):
         if item['type']=='url':
             url=item['link']
-            insert_link(url)
+            txt=url.split('/')
+            mal_id=int(txt[txt.index('anime')+1])
+            insert_link(url,mal_id)
 
 
 class GenreScraperPipeline:
